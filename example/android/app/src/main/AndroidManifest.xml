@@ -30,10 +30,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="poc"
-                    android:host="success" />
-                <data
-                    android:scheme="poc"
-                    android:host="failure" />
+                    android:host="uaepass" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

@@ -20,7 +20,6 @@ class Uaepass {
     required this.appScheme,
     required this.clientId,
     required this.clientSecret,
-    required this.redirectUri,
   });
 
   static Uaepass init({
@@ -28,7 +27,6 @@ class Uaepass {
     required String appScheme,
     required String clientId,
     required String clientSecret,
-    String? redirectUri,
     bool fullscreen = true,
     bool showMessages = true,
   }) =>
@@ -39,7 +37,6 @@ class Uaepass {
         appScheme: appScheme,
         clientId: clientId,
         clientSecret: clientSecret,
-        redirectUri: redirectUri,
       );
 
   static Uaepass get instance {
@@ -59,7 +56,6 @@ class Uaepass {
   String? _code;
   UaepassToken? _token;
   UaepassUser? _user;
-  final String? redirectUri;
 
   /// Get authorization code
   String? get code => _code;
@@ -92,19 +88,5 @@ class Uaepass {
     _token = await Helper.getTokenAsync(code!);
     if (_token == null) return;
     _user = await Helper.getUser(_token!.accessToken!);
-  }
-
-  /// Initiate UAEPass login
-  Future<void> getAccessCode(BuildContext context) async {
-    final code = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const UaepassLoginView(),
-        fullscreenDialog: fullscreen,
-      ),
-    );
-
-    if (code == null) return;
-    _code = code;
   }
 }
