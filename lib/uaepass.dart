@@ -94,7 +94,7 @@ class Uaepass {
     _user = await Helper.getUser(_token!.accessToken!);
   }
 
-  /// Initiate UAEPass login
+  /// Initiate UAEPass to Get Login Code
   Future<void> getAccessCode(BuildContext context) async {
     final code = await Navigator.push(
       context,
