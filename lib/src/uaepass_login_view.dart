@@ -8,17 +8,17 @@ import 'configuration.dart';
 import 'helper.dart';
 
 class UaepassLoginView extends StatefulWidget {
-  const UaepassLoginView({Key? key}) : super(key: key);
+  const UaepassLoginView({super.key});
 
   @override
   State<UaepassLoginView> createState() => _UaepassLoginViewState();
 }
 
 class _UaepassLoginViewState extends State<UaepassLoginView> {
-  InAppWebViewController? webViewController;
-  String successUrl = '';
-  PullToRefreshController? pullToRefreshController;
   double progress = 0;
+  String successUrl = '';
+  InAppWebViewController? webViewController;
+  PullToRefreshController? pullToRefreshController;
   final MethodChannel channel = const MethodChannel('poc.uaepass/channel1');
 
   @override
@@ -26,11 +26,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
     super.initState();
     channel.setMethodCallHandler((MethodCall call) async {
       final decoded = Uri.decodeFull(successUrl);
-      webViewController?.loadUrl(
-        urlRequest: URLRequest(
-          url: Uri.parse(decoded),
-        ),
-      );
+      webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri(decoded)));
     });
   }
 
@@ -51,16 +47,14 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           // ),
           body: SafeArea(
             child: InAppWebView(
-              initialUrlRequest: URLRequest(url: Uri.parse(snapshot.data!)),
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                  transparentBackground: true,
-                  useShouldOverrideUrlLoading: true,
-                  supportZoom: false,
-                ),
+              initialUrlRequest: URLRequest(url: WebUri(snapshot.data!)),
+              initialSettings: InAppWebViewSettings(
+                supportZoom: false,
+                transparentBackground: true,
+                useShouldOverrideUrlLoading: true,
               ),
               onWebViewCreated: (controller) async {
-                controller.clearCache();
+                await InAppWebViewController.clearAllCache();
                 webViewController = controller;
               },
               shouldOverrideUrlLoading: (controller, uri) async {
