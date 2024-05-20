@@ -29,7 +29,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       final decoded = Uri.decodeFull(successUrl);
       webViewController?.loadUrl(
         urlRequest: URLRequest(
-          url: WebUri.uri(Uri.parse(decoded)),
+          url: Uri.parse(decoded),
         ),
       );
     });
@@ -50,8 +50,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             title: const Text('UAE Pass'),
           ),
           body: InAppWebView(
-            initialUrlRequest:
-                URLRequest(url: WebUri.uri(Uri.parse(snapshot.data!))),
+            initialUrlRequest: URLRequest(url: Uri.parse(snapshot.data!)),
             initialOptions: InAppWebViewGroupOptions(
               crossPlatform: InAppWebViewOptions(
                 transparentBackground: true,
