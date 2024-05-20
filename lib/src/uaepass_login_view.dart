@@ -8,7 +8,7 @@ import 'configuration.dart';
 import 'helper.dart';
 
 class UaepassLoginView extends StatefulWidget {
-  const UaepassLoginView({Key? key}) : super(key: key);
+  const UaepassLoginView({super.key});
 
   @override
   State<UaepassLoginView> createState() => _UaepassLoginViewState();
@@ -29,7 +29,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       final decoded = Uri.decodeFull(successUrl);
       webViewController?.loadUrl(
         urlRequest: URLRequest(
-          url: Uri.parse(decoded),
+          url: WebUri.uri(Uri.parse(decoded)),
         ),
       );
     });
@@ -50,7 +50,8 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             title: const Text('UAE Pass'),
           ),
           body: InAppWebView(
-            initialUrlRequest: URLRequest(url: Uri.parse(snapshot.data!)),
+            initialUrlRequest:
+                URLRequest(url: WebUri.uri(Uri.parse(snapshot.data!))),
             initialOptions: InAppWebViewGroupOptions(
               crossPlatform: InAppWebViewOptions(
                 transparentBackground: true,
