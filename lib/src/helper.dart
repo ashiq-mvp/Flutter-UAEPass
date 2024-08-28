@@ -16,12 +16,12 @@ class UaePassAuthUrl {
 mixin Helper {
   static Future<String> getLoginUrl() async {
     final baseUrl = Configuration.authroizeUrl;
-    const redirectUrl = Configuration.redirectURL;
+    final redirectUrl = Configuration.redirectURL;
     const scope = Configuration.scope;
     const state = 'ShNP22hyl1jUU2RGjTRkpg==';
     const responseType = Configuration.responseType;
 
-    var appInstalled = true;
+    var appInstalled = false;
     var acrValues = '';
 
     if (await canLaunchUrlString(
@@ -69,7 +69,7 @@ mixin Helper {
         'client_id': Uaepass.instance.clientId,
         'client_secret': Uaepass.instance.clientSecret,
         'grant_type': Configuration.grantType,
-        'code': code
+        'code': code,
       },
     );
 
