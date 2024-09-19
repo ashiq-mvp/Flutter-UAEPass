@@ -77,14 +77,12 @@ class Uaepass {
 
   /// Initiate UAEPass login
   Future<void> login(BuildContext context) async {
-    final code = await Navigator.push(
-      context,
+    final code = await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => const UaepassLoginView(),
         fullscreenDialog: fullscreen,
       ),
     );
-
     if (code == null) return;
     _code = code;
 
@@ -96,7 +94,8 @@ class Uaepass {
 
   /// Initiate UAEPass to Get Login Code
   Future<void> getAccessCode(BuildContext context) async {
-    final code = await Navigator.of(context, rootNavigator: true).push(
+    final code = await Navigator.push(
+      context,
       MaterialPageRoute(
         builder: (context) => const UaepassLoginView(),
         fullscreenDialog: fullscreen,
