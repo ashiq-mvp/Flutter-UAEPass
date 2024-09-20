@@ -39,7 +39,10 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
 
   @override
   void dispose() {
-    webViewController?.dispose();
+    if (webViewController != null) {
+      webViewController?.dispose();
+    }
+
     super.dispose();
   }
 
