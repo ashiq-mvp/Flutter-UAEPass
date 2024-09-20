@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -28,8 +29,18 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
     super.initState();
     channel.setMethodCallHandler((MethodCall call) async {
       final decoded = Uri.decodeFull(successUrl);
+      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+        await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+      }
+
       webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri(decoded)));
     });
+  }
+
+  @override
+  void dispose() {
+    webViewController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,7 +72,9 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
               },
               shouldOverrideUrlLoading: (controller, uri) async {
                 final url = uri.request.url.toString();
-                if (Configuration.app2App && url.contains('uaepass://')) {
+                if (Configuration.app2App &&
+                    (url.contains('uaepass://') ||
+                        url.contains('uaepass.ae/'))) {
                   final openUrl = Helper.getUaePassOpenUrl(uri.request.url!);
                   successUrl = openUrl.successUrl;
                   // print('success: $successUrl');

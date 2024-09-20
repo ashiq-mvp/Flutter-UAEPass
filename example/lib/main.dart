@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uaepass/uaepass.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Uaepass.init(
     env: UaePassEnv.stg,
     appScheme: 'poc',
@@ -49,101 +50,101 @@ class _MyAppState extends State<MyApp> {
               Text('Default', style: Theme.of(context).textTheme.headlineSmall),
               uaepassButton(
                 lang: UaepassLang.en,
-                type: UaepassButtonType.normal,
-                theme: UaePassButtonTheme.white,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.normal,
-                theme: UaePassButtonTheme.white,
-              ),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.normal,
-                theme: UaePassButtonTheme.outline,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.normal,
-                theme: UaePassButtonTheme.outline,
-              ),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.normal,
+                type: UaepassButtonType.pill,
                 theme: UaePassButtonTheme.dark,
               ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.normal,
-                theme: UaePassButtonTheme.dark,
-              ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.normal,
+              //   theme: UaePassButtonTheme.white,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.normal,
+              //   theme: UaePassButtonTheme.outline,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.normal,
+              //   theme: UaePassButtonTheme.outline,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.normal,
+              //   theme: UaePassButtonTheme.dark,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.normal,
+              //   theme: UaePassButtonTheme.dark,
+              // ),
               const Divider(),
-              Text('Pill', style: Theme.of(context).textTheme.headlineSmall),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.pill,
-                theme: UaePassButtonTheme.white,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.pill,
-                theme: UaePassButtonTheme.white,
-              ),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.pill,
-                theme: UaePassButtonTheme.outline,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.pill,
-                theme: UaePassButtonTheme.outline,
-              ),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.pill,
-                theme: UaePassButtonTheme.dark,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.pill,
-                theme: UaePassButtonTheme.dark,
-              ),
-              const Divider(),
-              Text('Sharp', style: Theme.of(context).textTheme.headlineSmall),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.sharp,
-                theme: UaePassButtonTheme.white,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.sharp,
-                theme: UaePassButtonTheme.white,
-              ),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.sharp,
-                theme: UaePassButtonTheme.outline,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.sharp,
-                theme: UaePassButtonTheme.outline,
-              ),
-              uaepassButton(
-                lang: UaepassLang.en,
-                type: UaepassButtonType.sharp,
-                theme: UaePassButtonTheme.dark,
-              ),
-              uaepassButton(
-                lang: UaepassLang.ar,
-                type: UaepassButtonType.sharp,
-                theme: UaePassButtonTheme.dark,
-              ),
-              const SizedBox(
-                height: 50,
-              )
+              // Text('Pill', style: Theme.of(context).textTheme.headlineSmall),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.pill,
+              //   theme: UaePassButtonTheme.white,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.pill,
+              //   theme: UaePassButtonTheme.white,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.pill,
+              //   theme: UaePassButtonTheme.outline,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.pill,
+              //   theme: UaePassButtonTheme.outline,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.pill,
+              //   theme: UaePassButtonTheme.dark,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.pill,
+              //   theme: UaePassButtonTheme.dark,
+              // ),
+              // const Divider(),
+              // Text('Sharp', style: Theme.of(context).textTheme.headlineSmall),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.sharp,
+              //   theme: UaePassButtonTheme.white,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.sharp,
+              //   theme: UaePassButtonTheme.white,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.sharp,
+              //   theme: UaePassButtonTheme.outline,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.sharp,
+              //   theme: UaePassButtonTheme.outline,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.en,
+              //   type: UaepassButtonType.sharp,
+              //   theme: UaePassButtonTheme.dark,
+              // ),
+              // uaepassButton(
+              //   lang: UaepassLang.ar,
+              //   type: UaepassButtonType.sharp,
+              //   theme: UaePassButtonTheme.dark,
+              // ),
+              // const SizedBox(
+              //   height: 50,
+              // )
             ],
           ),
         ),
