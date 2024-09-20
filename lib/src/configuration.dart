@@ -17,7 +17,8 @@ class Configuration {
       '$baseUrl/trustedx-resources/esignsp/v2/signer_processes';
 
   static String get uaePassScheme =>
-      Uaepass.instance.env == UaePassEnv.stg ? 'uaepassstg://' : 'uaepass://';
+      Uaepass.instance.env == UaePassEnv.stg ? 'uaepassstg://' : 'uaepass.ae/';
+  // 'uaepass://';
 
   static String successScheme = '${Uaepass.instance.appScheme}://success';
   static String failScheme = '${Uaepass.instance.appScheme}://failure';
