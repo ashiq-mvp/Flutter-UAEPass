@@ -14,8 +14,11 @@ dependencies:
 
   http: ^1.2.2
   url_launcher: ^6.3.0
-  flutter_inappwebview: ^5.8.0
+  flutter_inappwebview: ^6.0.0
   plugin_platform_interface: ^2.1.8
+
+dependency_overrides:
+  webview_flutter_android: 3.16.1
 
 dev_dependencies:
   flutter_test:
