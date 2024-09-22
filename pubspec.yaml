@@ -1,6 +1,6 @@
 name: uaepass
 description: UAE PASS service allows using a mobile device as a secure form of identification. UAE PASS automates and simplifies managing digital identity in mobile devices for users.
-version: 0.0.5
+version: 0.0.7
 repository: https://github.com/Alkhajeh/Flutter-UAEPass
 issue_tracker: https://github.com/Alkhajeh/Flutter-UAEPass/issues
 
@@ -14,7 +14,8 @@ dependencies:
 
   http: ^1.2.2
   url_launcher: ^6.3.0
-  zikzak_inappwebview: ^1.0.3
+  webview_flutter: ^4.9.0
+  zikzak_inappwebview: ^1.0.4
   plugin_platform_interface: ^2.1.8
 
 dev_dependencies:

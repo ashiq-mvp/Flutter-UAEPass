@@ -336,10 +336,10 @@ packages:
     dependency: transitive
     description:
       name: zikzak_inappwebview
-      sha256: cfabd768c229c7f275605158163a2dcec29420eec4d76f57f5789a616d398665
+      sha256: "201d04e6e82cf14bf16e510b9643ab06a897c705c32b35fa8c9aa7d876fc0d30"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   zikzak_inappwebview_android:
     dependency: transitive
     description:

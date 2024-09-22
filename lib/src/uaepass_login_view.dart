@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
 
 import '../uaepass.dart';
 import 'configuration.dart';
@@ -17,8 +18,7 @@ class UaepassLoginView extends StatefulWidget {
 class _UaepassLoginViewState extends State<UaepassLoginView> {
   double progress = 0;
   String successUrl = '';
-  InAppWebViewController? webViewController;
-  PullToRefreshController? pullToRefreshController;
+  late final WebViewController _controller;
   final MethodChannel channel = const MethodChannel('poc.uaepass/channel1');
 
   @override
@@ -26,7 +26,47 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
     super.initState();
     channel.setMethodCallHandler((MethodCall call) async {
       final decoded = Uri.decodeFull(successUrl);
-      webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri(decoded)));
+      _controller = WebViewController()
+        ..clearCache()
+        ..enableZoom(true)
+        ..setBackgroundColor(Colors.transparent)
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {},
+            onPageStarted: (String url) async {
+              if (Configuration.app2App && url.contains('uaepass://')) {
+                final openUrl = Helper.getUaePassOpenUrl(Uri.parse(url));
+                successUrl = openUrl.successUrl;
+
+                await launchUrlString(openUrl.appUrl);
+                // return NavigationActionPolicy.CANCEL;
+                await _controller.goBack();
+              } else if (url.contains('code=')) {
+                final code = Uri.parse(url).queryParameters['code'];
+                Navigator.pop(context, code);
+              } else if (url.contains('cancelled')) {
+                if (Uaepass.instance.showMessages) {
+                  ScaffoldMessenger.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      const SnackBar(
+                        content: Text('User cancelled login with UAE Pass'),
+                      ),
+                    );
+                }
+                Navigator.pop(context);
+              }
+            },
+            onPageFinished: (String url) {},
+            onHttpError: (HttpResponseError error) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(decoded));
     });
   }
 
@@ -46,47 +86,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           //   automaticallyImplyLeading: false,
           // ),
           body: SafeArea(
-            child: InAppWebView(
-              initialUrlRequest: URLRequest(url: WebUri(snapshot.data!)),
-              initialSettings: InAppWebViewSettings(
-                supportZoom: false,
-                transparentBackground: true,
-                useShouldOverrideUrlLoading: true,
-              ),
-              onWebViewCreated: (controller) async {
-                await InAppWebViewController.clearAllCache();
-                webViewController = controller;
-              },
-              shouldOverrideUrlLoading: (controller, uri) async {
-                final url = uri.request.url.toString();
-                if (Configuration.app2App && url.contains('uaepass://')) {
-                  final openUrl = Helper.getUaePassOpenUrl(uri.request.url!);
-                  successUrl = openUrl.successUrl;
-                  // print('success: $successUrl');
-                  // print('oepnUrl: ${openUrl.appUrl}');
-
-                  await launchUrlString(openUrl.appUrl);
-                  return NavigationActionPolicy.CANCEL;
-                }
-
-                if (url.contains('code=')) {
-                  final code = Uri.parse(url).queryParameters['code'];
-                  Navigator.pop(context, code);
-                } else if (url.contains('cancelled')) {
-                  if (Uaepass.instance.showMessages) {
-                    ScaffoldMessenger.of(context)
-                      ..removeCurrentSnackBar()
-                      ..showSnackBar(
-                        const SnackBar(
-                          content: Text('User cancelled login with UAE Pass'),
-                        ),
-                      );
-                  }
-                  Navigator.pop(context);
-                }
-                return null;
-              },
-            ),
+            child: WebViewWidget(controller: _controller),
           ),
         );
       },
