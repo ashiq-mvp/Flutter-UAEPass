@@ -24,50 +24,71 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
   @override
   void initState() {
     super.initState();
-    channel.setMethodCallHandler((MethodCall call) async {
-      final decoded = Uri.decodeFull(successUrl);
-      _controller = WebViewController()
-        ..clearCache()
-        ..enableZoom(true)
-        ..setBackgroundColor(Colors.transparent)
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onProgress: (int progress) {},
-            onPageStarted: (String url) async {
-              if (Configuration.app2App && url.contains('uaepass://')) {
-                final openUrl = Helper.getUaePassOpenUrl(Uri.parse(url));
-                successUrl = openUrl.successUrl;
+    _initializeWebViewController();
+    _setupMethodChannel();
+  }
 
-                await launchUrlString(openUrl.appUrl);
-                // return NavigationActionPolicy.CANCEL;
-                await _controller.goBack();
-              } else if (url.contains('code=')) {
-                final code = Uri.parse(url).queryParameters['code'];
-                Navigator.pop(context, code);
-              } else if (url.contains('cancelled')) {
-                if (Uaepass.instance.showMessages) {
-                  ScaffoldMessenger.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                      const SnackBar(
-                        content: Text('User cancelled login with UAE Pass'),
-                      ),
-                    );
-                }
-                Navigator.pop(context);
-              }
-            },
-            onPageFinished: (String url) {},
-            onHttpError: (HttpResponseError error) {},
-            onWebResourceError: (WebResourceError error) {},
-            onNavigationRequest: (NavigationRequest request) {
-              return NavigationDecision.navigate;
-            },
-          ),
-        )
-        ..loadRequest(Uri.parse(decoded));
+  void _initializeWebViewController() {
+    _controller = WebViewController()
+      ..clearCache()
+      ..enableZoom(true)
+      ..setBackgroundColor(Colors.transparent)
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            setState(() {
+              this.progress = progress / 100;
+            });
+          },
+          onPageStarted: _onPageStarted,
+          onPageFinished: (String url) {
+            setState(() {
+              progress = 1.0;
+            });
+          },
+          onHttpError: (HttpResponseError error) {
+            _showError('HTTP Error: $error');
+          },
+          onWebResourceError: (WebResourceError error) {
+            _showError('Resource Error: ${error.description}');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+        ),
+      );
+  }
+
+  void _setupMethodChannel() {
+    channel.setMethodCallHandler((MethodCall call) async {
+      final decodedUrl = Uri.decodeFull(successUrl);
+      _controller.loadRequest(Uri.parse(decodedUrl));
     });
+  }
+
+  Future<void> _onPageStarted(String url) async {
+    if (Configuration.app2App && url.contains('uaepass://')) {
+      final openUrl = Helper.getUaePassOpenUrl(Uri.parse(url));
+      successUrl = openUrl.successUrl;
+
+      await launchUrlString(openUrl.appUrl);
+      await _controller.goBack();
+    } else if (url.contains('code=')) {
+      final code = Uri.parse(url).queryParameters['code'];
+      Navigator.pop(context, code);
+    } else if (url.contains('cancelled')) {
+      if (Uaepass.instance.showMessages) {
+        _showError('User cancelled login with UAE Pass');
+      }
+      Navigator.pop(context);
+    }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -76,17 +97,17 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       future: Helper.getLoginUrl(),
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
+
         return Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: const Color(0xFF55C9B2),
-          //   foregroundColor: Colors.black,
-          //   title: const Text('UAE Pass'),
-          //   automaticallyImplyLeading: false,
-          // ),
           body: SafeArea(
-            child: WebViewWidget(controller: _controller),
+            child: Stack(
+              children: [
+                WebViewWidget(controller: _controller),
+                if (progress < 1.0) LinearProgressIndicator(value: progress),
+              ],
+            ),
           ),
         );
       },
