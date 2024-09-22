@@ -18,7 +18,7 @@ class UaepassLoginView extends StatefulWidget {
 class _UaepassLoginViewState extends State<UaepassLoginView> {
   double progress = 0;
   String successUrl = '';
-  late final WebViewController _controller;
+  late WebViewController _controller;
   final MethodChannel channel = const MethodChannel('poc.uaepass/channel1');
 
   @override
