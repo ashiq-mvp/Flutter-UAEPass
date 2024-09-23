@@ -5,7 +5,7 @@ repository: https://github.com/Alkhajeh/Flutter-UAEPass
 issue_tracker: https://github.com/Alkhajeh/Flutter-UAEPass/issues
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ">=3.3.4 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -15,7 +15,7 @@ dependencies:
   http: ^1.2.2
   url_launcher: ^6.3.0
   webview_flutter: ^4.9.0
-  zikzak_inappwebview: ^1.0.4
+  flutter_inappwebview: ^6.0.0
   plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
