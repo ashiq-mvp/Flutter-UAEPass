@@ -1,12 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-// import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
-
-import '../uaepass.dart';
-import 'configuration.dart';
 import 'helper.dart';
 
 class UaepassLoginView extends StatefulWidget {
@@ -37,6 +32,11 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
+          onPageStarted: (String url) {
+            if (_controller != null) {
+              _controller?.clearCache();
+            }
+          },
           onProgress: (int progress) {
             setState(() {
               this.progress = progress / 100;
@@ -102,7 +102,9 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             child: Stack(
               children: [
                 if (_controller != null)
-                  WebViewWidget(controller: _controller!),
+                  WebViewWidget(
+                    controller: _controller!,
+                  ),
                 if (progress < 1.0) LinearProgressIndicator(value: progress),
               ],
             ),
