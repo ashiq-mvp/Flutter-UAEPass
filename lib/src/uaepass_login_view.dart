@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../uaepass.dart';
+import 'configuration.dart';
 import 'helper.dart';
 
 class UaepassLoginView extends StatefulWidget {
@@ -16,7 +20,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
   String successUrl = '';
   WebViewController? _controller;
   final MethodChannel channel = const MethodChannel('poc.uaepass/channel1');
-
+  final WebViewCookieManager cookieManager = WebViewCookieManager();
   @override
   void initState() {
     super.initState();
@@ -32,10 +36,16 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (String url) {
+          onPageStarted: (String url) async {
             if (_controller != null) {
               _controller?.clearCache();
             }
+            final bool hadCookies = await cookieManager.clearCookies();
+            String message = 'There were cookies. Now, they are gone!';
+            if (!hadCookies) {
+              message = 'There are no cookies.';
+            }
+            debugPrint(message);
           },
           onProgress: (int progress) {
             setState(() {
@@ -71,14 +81,24 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       );
   }
 
-  void _setupMethodChannel() async {
+  Future<void> _setupMethodChannel() async {
+    final getUrl = Uri.parse(await Helper.getLoginUrl());
+
+    await cookieManager.setCookie(
+      WebViewCookie(
+        name: Uaepass.instance.appScheme,
+        value: 'bar',
+        domain: getUrl.host,
+        path: getUrl.path,
+      ),
+    );
     // channel.setMethodCallHandler((MethodCall call) async {
-    final decodedUrl = Uri.parse(await Helper.getLoginUrl());
+
     if (kDebugMode) {
-      print('U Service: $decodedUrl');
+      print('U Service: $getUrl');
     }
     // _controller!.loadRequest(Uri.parse('https://flutter.dev/'));
-    _controller?.loadRequest(decodedUrl);
+    _controller?.loadRequest(getUrl);
     // });
   }
 
