@@ -49,14 +49,35 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           child: WebViewWidget(
               controller: WebViewController()
                 ..clearCache()
-                ..enableZoom(true)
+                ..enableZoom(false)
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)
                 ..setNavigationDelegate(
                   NavigationDelegate(
                     onProgress: (int progress) {},
                     onPageStarted: (String endUrl) {
                       final cookieManager = WebViewCookieManager();
+
                       cookieManager.clearCookies();
+                      final uri = Uri.dataFromString(endUrl);
+                      if (endUrl.contains('error=')) {
+                        switch (uri.queryParameters['error'].toString()) {
+                          case "cancelled":
+                            return Navigator.of(context).pop();
+                          case "cancelledOnApp":
+                            return Navigator.of(context).pop();
+                        }
+                        return Navigator.of(context).pop();
+                      }
+                      if (endUrl.contains('code=')) {
+                        // state = uri.queryParameters['state']!;
+                        // code = uri.queryParameters['code']!;
+                        return Navigator.of(context).pop();
+                      } else if (endUrl == "https://selfcare.uaepass.ae/" ||
+                          endUrl.contains("https://ercweb.mvp-apps.ae/auth")) {
+                        return Navigator.of(context).pop(
+                            // UaePassResult()..status = UaePassStatus.cancelled,
+                            );
+                      }
                     },
                     onPageFinished: (String url) {},
                     onHttpError: (HttpResponseError error) {},
