@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -45,7 +46,7 @@ mixin Helper {
         '&acr_values=$acrValues';
   }
 
-  static UaePassAuthUrl getUaePassOpenUrl(Uri url) {
+  static Future<UaePassAuthUrl> getUaePassOpenUrl(Uri url) async {
     final newUrl = '${Configuration.uaePassScheme}${url.host}${url.path}';
     final uaePassAuthUrl = UaePassAuthUrl();
 
