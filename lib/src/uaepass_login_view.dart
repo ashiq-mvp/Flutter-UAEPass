@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../uaepass.dart';
-import 'configuration.dart';
 import 'helper.dart';
 
 class UaepassLoginView extends StatefulWidget {
@@ -57,11 +54,13 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             debugPrint('U Service 1 $url');
             final uri = Uri.parse(url);
             final code = uri.queryParameters['code'];
+
             if (code != null) {
               debugPrint('Fetched code: $code');
               Navigator.pop(context, code);
-            } else {
-              debugPrint('Code parameter not found.');
+            } else if (url.contains('canceled')) {
+              debugPrint('User Canceled');
+              Navigator.pop(context);
             }
             setState(() {
               progress = 1.0;
@@ -70,11 +69,20 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           onHttpError: (HttpResponseError error) {
             _showError('HTTP Error: $error');
           },
-          onWebResourceError: (WebResourceError error) {
+          onWebResourceError: (error) {
             _showError('Resource Error: ${error.description}');
           },
-          onNavigationRequest: (NavigationRequest request) {
+          onNavigationRequest: (NavigationRequest request) async {
+            final uri = Uri.parse(request.url);
+            final code = uri.queryParameters['code'];
             debugPrint('U Service ${request.url}');
+            if (code != null) {
+              return NavigationDecision.navigate;
+            }
+
+            // else if (request.url.contains('cancelled')) {
+            //   return NavigationDecision.prevent;
+            // }
             return NavigationDecision.navigate;
           },
         ),
