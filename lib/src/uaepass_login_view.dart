@@ -70,13 +70,12 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
                       }
                       if (endUrl.contains('code=')) {
                         // state = uri.queryParameters['state']!;
-                        // code = uri.queryParameters['code']!;
-                        return Navigator.of(context).pop();
+                        final code = uri.queryParameters['code']!;
+
+                        return Navigator.of(context).pop(code);
                       } else if (endUrl == "https://selfcare.uaepass.ae/" ||
                           endUrl.contains("https://ercweb.mvp-apps.ae/auth")) {
-                        return Navigator.of(context).pop(
-                            // UaePassResult()..status = UaePassStatus.cancelled,
-                            );
+                        return Navigator.of(context).pop();
                       }
                     },
                     onPageFinished: (String url) {},
