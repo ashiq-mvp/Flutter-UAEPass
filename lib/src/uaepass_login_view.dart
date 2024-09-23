@@ -77,7 +77,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             final code = uri.queryParameters['code'];
             debugPrint('U Service ${request.url}');
             if (code != null) {
-              Navigator.pop(context);
+              Navigator.pop(context, code);
             }
 
             // else if (request.url.contains('cancelled')) {
