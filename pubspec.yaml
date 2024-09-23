@@ -14,7 +14,6 @@ dependencies:
 
   http: ^1.2.2
   url_launcher: ^6.3.0
-  zikzak_inappwebview: ^1.0.4
   plugin_platform_interface: ^2.1.8
   webview_flutter: ^4.9.0
   webview_flutter_android: ^3.16.7

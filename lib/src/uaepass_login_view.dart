@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
 
 import '../uaepass.dart';
 import 'configuration.dart';
@@ -23,8 +20,8 @@ class UaepassLoginView extends StatefulWidget {
 class _UaepassLoginViewState extends State<UaepassLoginView> {
   double progress = 0;
   String successUrl = '';
-  InAppWebViewController? webViewController;
-  PullToRefreshController? pullToRefreshController;
+  // InAppWebViewController? webViewController;
+  // PullToRefreshController? pullToRefreshController;
   final MethodChannel channel = const MethodChannel('poc.uaepass/channel1');
   WebViewController? _controller;
   @override
