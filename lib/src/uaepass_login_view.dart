@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -18,7 +19,7 @@ class UaepassLoginView extends StatefulWidget {
 class _UaepassLoginViewState extends State<UaepassLoginView> {
   double progress = 0;
   String successUrl = '';
-  late WebViewController _controller;
+  WebViewController? _controller;
   final MethodChannel channel = const MethodChannel('poc.uaepass/channel1');
 
   @override
@@ -31,7 +32,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
   void _initializeWebViewController() {
     _controller = WebViewController()
       ..clearCache()
-      ..enableZoom(true)
+      ..enableZoom(false)
       ..setBackgroundColor(Colors.transparent)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -41,8 +42,17 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
               this.progress = progress / 100;
             });
           },
-          onPageStarted: _onPageStarted,
+          // onPageStarted: _onPageStarted,
           onPageFinished: (String url) {
+            debugPrint('U Service 1 $url');
+            final uri = Uri.parse(url);
+            final code = uri.queryParameters['code'];
+            if (code != null) {
+              debugPrint('Fetched code: $code');
+              Navigator.pop(context, code);
+            } else {
+              debugPrint('Code parameter not found.');
+            }
             setState(() {
               progress = 1.0;
             });
@@ -54,35 +64,22 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             _showError('Resource Error: ${error.description}');
           },
           onNavigationRequest: (NavigationRequest request) {
+            debugPrint('U Service ${request.url}');
             return NavigationDecision.navigate;
           },
         ),
       );
   }
 
-  void _setupMethodChannel() {
-    channel.setMethodCallHandler((MethodCall call) async {
-      final decodedUrl = Uri.decodeFull(successUrl);
-      _controller.loadRequest(Uri.parse(decodedUrl));
-    });
-  }
-
-  Future<void> _onPageStarted(String url) async {
-    if (Configuration.app2App && url.contains('uaepass://')) {
-      final openUrl = Helper.getUaePassOpenUrl(Uri.parse(url));
-      successUrl = openUrl.successUrl;
-
-      await launchUrlString(openUrl.appUrl);
-      await _controller.goBack();
-    } else if (url.contains('code=')) {
-      final code = Uri.parse(url).queryParameters['code'];
-      Navigator.pop(context, code);
-    } else if (url.contains('cancelled')) {
-      if (Uaepass.instance.showMessages) {
-        _showError('User cancelled login with UAE Pass');
-      }
-      Navigator.pop(context);
+  void _setupMethodChannel() async {
+    // channel.setMethodCallHandler((MethodCall call) async {
+    final decodedUrl = Uri.parse(await Helper.getLoginUrl());
+    if (kDebugMode) {
+      print('U Service: $decodedUrl');
     }
+    // _controller!.loadRequest(Uri.parse('https://flutter.dev/'));
+    _controller?.loadRequest(decodedUrl);
+    // });
   }
 
   void _showError(String message) {
@@ -104,7 +101,8 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           body: SafeArea(
             child: Stack(
               children: [
-                WebViewWidget(controller: _controller),
+                if (_controller != null)
+                  WebViewWidget(controller: _controller!),
                 if (progress < 1.0) LinearProgressIndicator(value: progress),
               ],
             ),

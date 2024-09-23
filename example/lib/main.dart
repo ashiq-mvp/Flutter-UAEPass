@@ -4,10 +4,11 @@ import 'package:uaepass/uaepass.dart';
 
 void main() {
   Uaepass.init(
-    env: UaePassEnv.stg,
-    appScheme: 'poc',
-    clientId: 'sandbox_stage',
-    clientSecret: 'sandbox_stage',
+    env: UaePassEnv.prod,
+    appScheme: 'ercapp',
+    clientId: 'emirates_rc_mob_prod',
+    clientSecret: 'P3GGj9EaxC9dFCn6',
+    redirectUri: 'https://www.emiratesrc.ae/redirect-uae-pass',
   );
   runApp(const MyApp());
 }
