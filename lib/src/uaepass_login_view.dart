@@ -37,12 +37,12 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             if (_controller != null) {
               _controller?.clearCache();
             }
-            // final bool hadCookies = await cookieManager.clearCookies();
-            // String message = 'There were cookies. Now, they are gone!';
-            // if (!hadCookies) {
-            //   message = 'There are no cookies.';
-            // }
-            // debugPrint(message);
+            final bool hadCookies = await cookieManager.clearCookies();
+            String message = 'There were cookies. Now, they are gone!';
+            if (!hadCookies) {
+              message = 'There are no cookies.';
+            }
+            debugPrint(message);
           },
           onProgress: (int progress) {
             setState(() {
@@ -106,7 +106,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       print('U Service: $getUrl');
     }
     // _controller!.loadRequest(Uri.parse('https://flutter.dev/'));
-    _controller?.loadRequest(getUrl);
+    _controller?.loadRequest(Uri.parse('https://flutter.dev/'));
     // });
   }
 
