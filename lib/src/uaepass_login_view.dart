@@ -71,7 +71,9 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             _showError('HTTP Error: $error');
           },
           onWebResourceError: (error) {
-            debugPrint('On Web Resource Error $error');
+            debugPrint(
+              'On Web Resource Error code: ${error.errorCode},  Error description: ${error.description}, Error errorType: ${error.errorType}, Error isfromMainFrame: ${error.isForMainFrame}, URL: ${error.url}',
+            );
             _showError('Resource Error: ${error.description}');
           },
           onNavigationRequest: (NavigationRequest request) async {
