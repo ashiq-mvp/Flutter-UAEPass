@@ -135,13 +135,18 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             toolbarHeight: 40,
             elevation: 0,
             backgroundColor: Colors.transparent,
-            leading: TextButton(
-              onPressed: () {
-                if (_controller != null) {
-                  _controller?.goBack();
-                }
-              },
-              child: const Text('Cancel?', style: TextStyle(color: Colors.red)),
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: TextButton(
+                onPressed: () {
+                  if (_controller != null) {
+                    _controller?.goBack();
+                    if (Navigator.canPop(context)) Navigator.pop(context);
+                  }
+                },
+                child:
+                    const Text('Cancel?', style: TextStyle(color: Colors.red)),
+              ),
             ),
           ),
           body: SafeArea(
