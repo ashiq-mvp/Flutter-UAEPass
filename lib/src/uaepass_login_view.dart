@@ -31,7 +31,6 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       ..enableZoom(false)
       ..setBackgroundColor(Colors.transparent)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..canGoBack()
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) async {
@@ -52,6 +51,11 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           },
           // onPageStarted: _onPageStarted,
           onPageFinished: (String url) {
+            setState(() {
+              _controller?.canGoBack().then((canGoBack) {
+                debugPrint('Can WebView go back: $canGoBack');
+              });
+            });
             debugPrint('onPageFinished $url');
             final uri = Uri.parse(url);
             final code = uri.queryParameters['code'];
