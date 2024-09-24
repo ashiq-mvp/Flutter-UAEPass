@@ -137,15 +137,14 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             backgroundColor: Colors.transparent,
             leading: Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: TextButton(
+              child: IconButton(
                 onPressed: () {
                   if (_controller != null) {
                     _controller?.goBack();
                     if (Navigator.canPop(context)) Navigator.pop(context);
                   }
                 },
-                child:
-                    const Text('Cancel?', style: TextStyle(color: Colors.red)),
+                icon: const Icon(Icons.cancel, color: Colors.red),
               ),
             ),
           ),
