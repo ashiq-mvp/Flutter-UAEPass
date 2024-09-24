@@ -106,7 +106,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       print('U Service: $getUrl');
     }
     // _controller!.loadRequest(Uri.parse('https://flutter.dev/'));
-    _controller?.loadRequest(Uri.parse('https://flutter.dev/'));
+    _controller?.loadRequest(getUrl);
     // });
   }
 
