@@ -140,12 +140,25 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
               padding: const EdgeInsets.only(left: 8.0),
               child: IconButton(
                 onPressed: () async {
-                  if (_controller != null && await _controller!.canGoBack()) {
-                    // Go back in the WebView if possible
-                    _controller?.goBack();
+                  if (_controller != null) {
+                    bool canGoBack = await _controller!.canGoBack();
+                    debugPrint('Can WebView go back? $canGoBack');
+
+                    if (canGoBack) {
+                      debugPrint('Going back in WebView');
+                      _controller?.goBack();
+                    } else {
+                      debugPrint('No WebView history, attempting to pop');
+                      if (Navigator.canPop(context)) {
+                        debugPrint('Navigator can pop, popping the screen');
+                        Navigator.pop(context);
+                      } else {
+                        debugPrint('Navigator cannot pop');
+                      }
+                    }
                   } else {
-                    if (!context.mounted) return;
-                    // If no back navigation is available in WebView, pop the Flutter screen
+                    debugPrint(
+                        'WebViewController is null, trying to pop the screen');
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
                     }
