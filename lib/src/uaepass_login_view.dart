@@ -139,10 +139,16 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             leading: Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: IconButton(
-                onPressed: () {
-                  if (_controller != null) {
+                onPressed: () async {
+                  if (_controller != null && await _controller!.canGoBack()) {
+                    // Go back in the WebView if possible
                     _controller?.goBack();
-                    if (Navigator.canPop(context)) Navigator.pop(context);
+                  } else {
+                    if (!context.mounted) return;
+                    // If no back navigation is available in WebView, pop the Flutter screen
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 icon: const Icon(Icons.close, color: Colors.red),
