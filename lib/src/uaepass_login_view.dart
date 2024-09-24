@@ -27,6 +27,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
 
   void _initializeWebViewController() {
     _controller = WebViewController()
+      ..platform
       ..clearCache()
       ..enableZoom(false)
       ..setBackgroundColor(Colors.transparent)
