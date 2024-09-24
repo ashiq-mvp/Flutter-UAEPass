@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -137,47 +138,52 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
         }
 
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 40,
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: IconButton(
-                onPressed: () async {
-                  if (_controller != null) {
-                    bool canGoBack = await _controller!.canGoBack();
-                    debugPrint('Can WebView go back? $canGoBack');
+          // appBar: AppBar(
+          //   toolbarHeight: 40,
+          //   elevation: 0,
+          //   backgroundColor: Colors.transparent,
+          //   leading: Padding(
+          //     padding: const EdgeInsets.only(left: 8.0),
+          //     child: IconButton(
+          //       onPressed: () async {
+          //         if (_controller != null) {
+          //           bool canGoBack = await _controller!.canGoBack();
+          //           debugPrint('Can WebView go back? $canGoBack');
 
-                    if (canGoBack) {
-                      debugPrint('Going back in WebView');
-                      _controller?.goBack();
-                    } else {
-                      debugPrint('No WebView history, attempting to pop');
-                      if (Navigator.canPop(context)) {
-                        debugPrint('Navigator can pop, popping the screen');
-                        Navigator.pop(context);
-                      } else {
-                        debugPrint('Navigator cannot pop');
-                      }
-                    }
-                  } else {
-                    debugPrint(
-                        'WebViewController is null, trying to pop the screen');
-                    if (Navigator.canPop(context)) {
-                      Navigator.pop(context);
-                    }
-                  }
-                },
-                icon: const Icon(Icons.close, color: Colors.red),
-              ),
-            ),
-          ),
+          //           if (canGoBack) {
+          //             debugPrint('Going back in WebView');
+          //             _controller?.goBack();
+          //           } else {
+          //             debugPrint('No WebView history, attempting to pop');
+          //             if (Navigator.canPop(context)) {
+          //               debugPrint('Navigator can pop, popping the screen');
+          //               Navigator.pop(context);
+          //             } else {
+          //               debugPrint('Navigator cannot pop');
+          //             }
+          //           }
+          //         } else {
+          //           debugPrint(
+          //               'WebViewController is null, trying to pop the screen');
+          //           if (Navigator.canPop(context)) {
+          //             Navigator.pop(context);
+          //           }
+          //         }
+          //       },
+          //       icon: const Icon(Icons.close, color: Colors.red),
+          //     ),
+          //   ),
+          // ),
           body: SafeArea(
             child: Stack(
               children: [
                 if (_controller != null)
                   WebViewWidget(
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                      Factory<VerticalDragGestureRecognizer>(
+                        () => VerticalDragGestureRecognizer(),
+                      ),
+                    },
                     controller: _controller!,
                   ),
                 if (progress < 1.0) LinearProgressIndicator(value: progress),
