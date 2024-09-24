@@ -25,6 +25,13 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
     _setupMethodChannel();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.loadRequest(Uri.parse('about:blank'));
+    _controller?.setNavigationDelegate(NavigationDelegate());
+  }
+
   void _initializeWebViewController() {
     _controller = WebViewController()
       ..clearCache()
