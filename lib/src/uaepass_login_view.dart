@@ -131,7 +131,17 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
         }
 
         return Scaffold(
-          appBar: AppBar(elevation: 0, backgroundColor: Colors.transparent),
+          appBar: AppBar(
+            toolbarHeight: 30,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel?', style: TextStyle(color: Colors.red)),
+            ),
+          ),
           body: SafeArea(
             child: Stack(
               children: [
