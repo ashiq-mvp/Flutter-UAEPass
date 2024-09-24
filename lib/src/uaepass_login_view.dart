@@ -31,6 +31,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
       ..enableZoom(false)
       ..setBackgroundColor(Colors.transparent)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..goBack()
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) async {
