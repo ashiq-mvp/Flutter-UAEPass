@@ -132,24 +132,23 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
         }
 
         return Scaffold(
-          // appBar:
-          //  AppBar(
-          //   toolbarHeight: 40,
-          //   elevation: 0,
-          //   backgroundColor: Colors.transparent,
-          //   leading: Padding(
-          //     padding: const EdgeInsets.only(left: 8.0),
-          //     child: IconButton(
-          //       onPressed: () {
-          //         if (_controller != null) {
-          //           _controller?.goBack();
-          //           if (Navigator.canPop(context)) Navigator.pop(context);
-          //         }
-          //       },
-          //       icon: const Icon(Icons.close, color: Colors.red),
-          //     ),
-          //   ),
-          // ),
+          appBar: AppBar(
+            toolbarHeight: 40,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: IconButton(
+                onPressed: () {
+                  if (_controller != null) {
+                    _controller?.goBack();
+                    if (Navigator.canPop(context)) Navigator.pop(context);
+                  }
+                },
+                icon: const Icon(Icons.close, color: Colors.red),
+              ),
+            ),
+          ),
           body: SafeArea(
             child: Stack(
               children: [
