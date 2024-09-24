@@ -145,7 +145,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
                     if (Navigator.canPop(context)) Navigator.pop(context);
                   }
                 },
-                icon: const Icon(Icons.cancel, color: Colors.red),
+                icon: const Icon(Icons.close, color: Colors.red),
               ),
             ),
           ),
