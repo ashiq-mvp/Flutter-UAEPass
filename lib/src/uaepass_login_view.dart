@@ -51,7 +51,7 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
           },
           // onPageStarted: _onPageStarted,
           onPageFinished: (String url) {
-            debugPrint('U Service 1 $url');
+            debugPrint('onPageFinished $url');
             final uri = Uri.parse(url);
             final code = uri.queryParameters['code'];
 
@@ -67,16 +67,19 @@ class _UaepassLoginViewState extends State<UaepassLoginView> {
             });
           },
           onHttpError: (HttpResponseError error) {
+            debugPrint('HTTP Error: $error');
             _showError('HTTP Error: $error');
           },
           onWebResourceError: (error) {
+            debugPrint('On Web Resource Error $error');
             _showError('Resource Error: ${error.description}');
           },
           onNavigationRequest: (NavigationRequest request) async {
             final uri = Uri.parse(request.url);
             final code = uri.queryParameters['code'];
-            debugPrint('U Service ${request.url}');
+            debugPrint('onNavigationRequest ${request.url}');
             if (code != null) {
+              debugPrint('onNavigationRequest CODE $code');
               Navigator.pop(context, code);
             }
 
