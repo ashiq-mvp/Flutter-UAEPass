@@ -5,13 +5,13 @@ import 'model/uaepass_buttons.dart';
 
 class UaepassLoginButton extends StatelessWidget {
   const UaepassLoginButton({
-    Key? key,
+    super.key,
     this.height = 50,
     this.onCallback,
     this.lang = UaepassLang.en,
     this.type = UaepassButtonType.normal,
     this.theme = UaePassButtonTheme.outline,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onCallback;
 
